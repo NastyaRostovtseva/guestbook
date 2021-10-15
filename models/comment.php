@@ -1,47 +1,51 @@
 <?php
-require_once '../index.php';
+require_once '../view/comment.php';
 
+$file = $_FILES['file'];
 $email = $_POST['email'];
 $text = $_POST['text'];
 
-function commentsValidate(string $email,string $text) : string
+function commentsValidate($email, $text)
 {
-    $errors = '';
-    $textLen = mb_strlen($text);
-    if($_POST) {
-        if($email !== '' && $text !== '') {
-            if ($textLen < 10 || $textLen > 140) {
-                $errors = 'Комментарий от 10 до 140 символов!';
-            }
-        }
-        $errors = 'Заполните поля!';
+    $error = '';
+
+    if($email === '') {
+        $error = 'email пуст';
     }
-    return $errors;
+    if ($text === '') {
+        $error = 'text пуст';
+    }
+    return $error;
 }
 
-function commentsAddTxt(string $email,string $text) : bool
+
+function commentsAddTxt($email, $text, $file)
 {
     $fileText = '../text.txt';
-    $date = date("F j, Y, g:i a");
-    if(commentsValidate($email, $text)) {
-        $comment = $email . ' *** ' . $text . ' *** ' . $date . ' *** ';
-//        var_dump($comment);die;
+    $date = date("Y-m-d H:i:s");
+    $validate = commentsValidate($email, $text);
+    if(empty($validate)) {
+        $comment = $email . '|' . $text . '|' . $file['name'] . '|'. $date . ' *** ';
         file_put_contents($fileText, PHP_EOL . $comment, FILE_APPEND);
+    } else {
+        echo $validate;
+    }
+}
+
+
+function commentsAdd($email, $text)
+{
+    $validate = commentsValidate($email, $text);
+    if(empty($validate)) {
+        $filename = '../text.txt';
+        echo (file_get_contents($filename));
+
     }
     return false;
 }
 
 
-//function commentsAdd(string $email,string $text) : bool
-//{
-//    if(commentsValidate($email, $text)) {
-//
-//    }
-//    r
-//}
-
-
-commentsAddTxt($email, $text);
-//commentsAdd($email, $text);
+commentsAddTxt($email, $text, $file);
+commentsAdd($email, $text);
 
 
