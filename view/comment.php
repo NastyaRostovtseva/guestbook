@@ -1,9 +1,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
 <div class="container d-flex justify-content-center">
     <div class="col-6">
         <h2>Оставить комментарий:</h2><br>
-        <form action="../models/comment.php" method="post" enctype="multipart/form-data">
+        <form action="../index.php" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Email</label>
                 <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">

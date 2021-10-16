@@ -1,14 +1,11 @@
 <?php
-require_once '../view/comment.php';
-
 $file = $_FILES['file'];
 $email = $_POST['email'];
 $text = $_POST['text'];
 
-function commentsValidate($email, $text)
+function validateComments($email, $text)
 {
     $error = '';
-
     if($email === '') {
         $error = 'email пуст';
     }
@@ -19,12 +16,12 @@ function commentsValidate($email, $text)
 }
 
 
-function commentsAddTxt($email, $text, $file)
+function addTxtComments($email, $text, $file)
 {
-    $fileText = '../text.txt';
+    $fileText = 'text.txt';
     $date = date("Y-m-d H:i:s");
-    $validate = commentsValidate($email, $text);
-    if(empty($validate)) {
+    $validate = validateComments($email, $text);
+    if($validate === '' && $_POST) {
         $comment = $email . '|' . $text . '|' . $file['name'] . '|'. $date . ' *** ';
         file_put_contents($fileText, PHP_EOL . $comment, FILE_APPEND);
     } else {
@@ -33,19 +30,23 @@ function commentsAddTxt($email, $text, $file)
 }
 
 
-function commentsAdd($email, $text)
+function getComments()
 {
-    $validate = commentsValidate($email, $text);
-    if(empty($validate)) {
-        $filename = '../text.txt';
-        echo (file_get_contents($filename));
+        $filename = 'text.txt';
+        $comments = file_get_contents($filename);
+        $comment = explode('***', $comments);
+        array_pop($comment);
+        return array_reverse($comment);
 
-    }
-    return false;
 }
 
 
-commentsAddTxt($email, $text, $file);
-commentsAdd($email, $text);
+function getFormatComment($comment)
+{
+    return (explode('|', $comment));
+}
+
+
+addTxtComments($email, $text, $file);
 
 
