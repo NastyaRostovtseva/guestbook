@@ -3,7 +3,7 @@
 <div class="container d-flex justify-content-center">
     <div class="col-6">
         <h2>Оставить комментарий:</h2><br>
-        <form action="../models/comment.php" method="post" enctype="multipart/form-data">
+        <form action="../controller/comment.php" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Email</label>
                 <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
@@ -20,7 +20,8 @@
                 </label>
             </div>
             <br>
-            <input class="btn btn-primary" type="submit" value="Отправить">
+            <input class="btn btn-primary" name="id" type="submit" value="Отправить">
+            <input type="hidden" name="add" value="add">
         </form>
     </div>
 </div>

@@ -1,14 +1,15 @@
 <?php
-require_once '../view/comment.php';
+require_once 'db.php';
 
 $file = $_FILES['file'];
 $email = $_POST['email'];
 $text = $_POST['text'];
 
-function commentsValidate($email, $text)
+
+
+function validateComments($email, $text)
 {
     $error = '';
-
     if($email === '') {
         $error = 'email пуст';
     }
@@ -18,34 +19,31 @@ function commentsValidate($email, $text)
     return $error;
 }
 
-
-function commentsAddTxt($email, $text, $file)
+function addComments()
 {
-    $fileText = '../text.txt';
-    $date = date("Y-m-d H:i:s");
-    $validate = commentsValidate($email, $text);
-    if(empty($validate)) {
-        $comment = $email . '|' . $text . '|' . $file['name'] . '|'. $date . ' *** ';
-        file_put_contents($fileText, PHP_EOL . $comment, FILE_APPEND);
-    } else {
-        echo $validate;
+    $email = $_POST['email'];
+    $text = $_POST['text'];
+    $validation = validateComments($email, $text);
+    if($validation === '') {
+        addData();
+        getComments();
     }
 }
 
 
-function commentsAdd($email, $text)
+function getComments()
 {
-    $validate = commentsValidate($email, $text);
-    if(empty($validate)) {
-        $filename = '../text.txt';
-        echo (file_get_contents($filename));
-
-    }
-    return false;
+    $conn = mysqli_connect("localhost", "root", "root", "guestbook");
+    $query = "SELECT * FROM comments ORDER BY id DESC";
+    $result = mysqli_query($conn, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+function deleteComment()
+{
 
-commentsAddTxt($email, $text, $file);
-commentsAdd($email, $text);
-
-
+    $delete = $_POST['delete'];
+    if($delete) {
+        deleteData();
+    }
+}
